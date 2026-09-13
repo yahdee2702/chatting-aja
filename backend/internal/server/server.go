@@ -1,7 +1,7 @@
 package server
 
 import (
-	"fmt"
+	"context"
 	"log/slog"
 	"net/http"
 
@@ -11,20 +11,34 @@ import (
 )
 
 type Server struct {
-	cfg    *config.AppConfig
-	logger *slog.Logger
+	cfg        *config.AppConfig
+	logger     *slog.Logger
+	httpServer *http.Server
 }
 
 func New(config *config.Config, logger *slog.Logger) *Server {
+	router := chi.NewRouter()
+
 	return &Server{
 		cfg:    &config.App,
 		logger: logger,
+		httpServer: &http.Server{
+			Addr:    ":" + config.App.Port,
+			Handler: router,
+		},
 	}
 }
 
-func (srv *Server) Run() error {
+func (s *Server) Run() error {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	return http.ListenAndServe(fmt.Sprintf(":%s", srv.cfg.Port), r)
+	s.logger.Info("starting server", "port", s.cfg.Port)
+
+	return s.httpServer.ListenAndServe()
+}
+
+func (s *Server) Shutdown(ctx context.Context) error {
+	s.logger.Info("server shutting down")
+	return s.httpServer.Shutdown(ctx)
 }

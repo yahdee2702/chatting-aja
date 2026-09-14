@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/yahdee2702/chatting-aja/internal/config"
+	"github.com/yahdee2702/chatting-aja/internal/database"
 	"github.com/yahdee2702/chatting-aja/internal/logging"
 	"github.com/yahdee2702/chatting-aja/internal/server"
 )
@@ -19,7 +20,13 @@ func main() {
 	logger := logging.New(config.App.Env)
 	slog.SetDefault(logger)
 
-	server := server.New(config, logger)
+	db, err := database.NewPostgres(config.DB)
+	if err != nil {
+		logger.Error("failed to connect database", "error", err)
+		os.Exit(1)
+	}
+
+	server := server.New(config, logger, db)
 
 	serverErr := make(chan error, 1)
 

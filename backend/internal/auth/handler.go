@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -31,11 +32,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	var req LoginRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		httpx.Error(
-			w,
-			http.StatusBadRequest,
-			"Invalid request body",
-		)
+		httpx.Error(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
@@ -50,4 +47,47 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		httpx.Error(w, http.StatusBadRequest, "Invalid request")
 		return
 	}
+
+	token, err := h.service.Login(r.Context(), req)
+
+	if err != nil {
+		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot login %s", err.Error()))
+		return
+	}
+
+	httpx.Success(w, http.StatusOK, "Succesfully logged in", LoginResponse{
+		Token: token,
+	})
+}
+
+func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
+	var req RegisterRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		httpx.Error(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	if err := h.validate.Struct(req); err != nil {
+		var validationErrors validator.ValidationErrors
+
+		if errors.As(err, &validationErrors) {
+			httpx.ValidationError(w, validationErrors)
+			return
+		}
+
+		httpx.Error(w, http.StatusBadRequest, "Invalid request")
+		return
+	}
+
+	token, err := h.service.Register(r.Context(), req)
+
+	if err != nil {
+		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot register %s", err.Error()))
+		return
+	}
+
+	httpx.Success(w, http.StatusOK, "Succesfully register in", LoginResponse{
+		Token: token,
+	})
 }

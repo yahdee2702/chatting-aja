@@ -12,8 +12,9 @@ type Config struct {
 }
 
 type AppConfig struct {
-	Env  string
-	Port string
+	Env    string
+	Port   string
+	Secret string
 }
 
 type DatabaseConfig struct {
@@ -31,8 +32,9 @@ func Load() *Config {
 	godotenv.Load()
 	return &Config{
 		App: AppConfig{
-			Env:  os.Getenv("APP_ENV"),
-			Port: os.Getenv("APP_PORT"),
+			Env:    os.Getenv("APP_ENV"),
+			Port:   os.Getenv("APP_PORT"),
+			Secret: os.Getenv("APP_SECRET"),
 		},
 		DB: DatabaseConfig{
 			Driver:   os.Getenv("DB_DRIVER"),

@@ -18,8 +18,10 @@ type Server struct {
 }
 
 func New(config *config.Config, logger *slog.Logger, db *sqlx.DB) *Server {
+	jwtHandler := auth.NewJwtHandler([]byte(config.App.Secret))
+
 	authRepository := auth.NewRepository(db)
-	authService := auth.NewService(authRepository)
+	authService := auth.NewService(authRepository, jwtHandler)
 	authHandler := auth.NewHandler(authService, logger)
 
 	router := NewRouter(authHandler)

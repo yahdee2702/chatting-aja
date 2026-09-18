@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS chats_users;
+DROP TABLE IF EXISTS chats;

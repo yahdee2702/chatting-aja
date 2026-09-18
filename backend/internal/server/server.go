@@ -7,7 +7,9 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/yahdee2702/chatting-aja/internal/auth"
+	"github.com/yahdee2702/chatting-aja/internal/chat"
 	"github.com/yahdee2702/chatting-aja/internal/config"
+	"github.com/yahdee2702/chatting-aja/internal/websocket"
 )
 
 type Server struct {
@@ -24,9 +26,15 @@ func New(config *config.Config, logger *slog.Logger, db *sqlx.DB) *Server {
 	authService := auth.NewService(authRepository, jwtHandler)
 	authHandler := auth.NewHandler(authService, logger)
 
+	chatRepository := chat.NewRepository(db)
+	chatService := chat.NewService(chatRepository)
+	chatHandler := chat.NewHandler(logger, chatService)
+
+	websocketHandler := websocket.NewHandler(logger, chatService)
+
 	authMiddleware := auth.NewAuthMiddleware(jwtHandler)
 
-	router := NewRouter(authHandler, authMiddleware)
+	router := NewRouter(authHandler, chatHandler, websocketHandler, authMiddleware)
 
 	return &Server{
 		cfg:    &config.App,

@@ -8,13 +8,14 @@ import (
 
 func NewRouter(
 	authHandler *auth.Handler,
+	authMiddleware *auth.AuthMiddleware,
 ) chi.Router {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Route("/auth", func(r chi.Router) {
-			auth.Routes(r, authHandler)
+			auth.Routes(r, authHandler, authMiddleware)
 		})
 	})
 

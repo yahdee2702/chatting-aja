@@ -6,6 +6,18 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const userColumns = `
+    id,
+    name,
+    email,
+    password_hash,
+    status,
+    email_verified_at,
+    created_at,
+    updated_at,
+    deleted_at
+`
+
 type Repository struct {
 	db *sqlx.DB
 }
@@ -20,19 +32,27 @@ func (r *Repository) FindUserByEmail(ctx context.Context, email string) (*User, 
 	var user User
 	err := r.db.QueryRowxContext(
 		ctx,
-		`SELECT 
-			id,
-			name,
-			email,
-			password_hash,
-			status,
-			email_verified_at,
-			created_at,
-			updated_at,
-			deleted_at
+		`SELECT `+userColumns+`
 		FROM users 
 		WHERE email = $1`,
 		email,
+	).StructScan(&user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (r *Repository) FindUserById(ctx context.Context, id string) (*User, error) {
+	var user User
+	err := r.db.QueryRowxContext(
+		ctx,
+		`SELECT `+userColumns+`
+		FROM users 
+		WHERE id = $1`,
+		id,
 	).StructScan(&user)
 
 	if err != nil {

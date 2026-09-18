@@ -64,3 +64,13 @@ func (s *Service) Register(ctx context.Context, req RegisterRequest) (string, er
 
 	return token, nil
 }
+
+func (s *Service) Me(ctx context.Context, userId string) (*User, error) {
+	user, err := s.repo.FindUserById(ctx, userId)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to find user: %w", err)
+	}
+
+	return user, nil
+}

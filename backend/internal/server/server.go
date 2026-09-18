@@ -24,7 +24,9 @@ func New(config *config.Config, logger *slog.Logger, db *sqlx.DB) *Server {
 	authService := auth.NewService(authRepository, jwtHandler)
 	authHandler := auth.NewHandler(authService, logger)
 
-	router := NewRouter(authHandler)
+	authMiddleware := auth.NewAuthMiddleware(jwtHandler)
+
+	router := NewRouter(authHandler, authMiddleware)
 
 	return &Server{
 		cfg:    &config.App,

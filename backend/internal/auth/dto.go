@@ -1,5 +1,7 @@
 package auth
 
+import "time"
+
 type LoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -14,4 +16,15 @@ type RegisterRequest struct {
 
 type LoginResponse struct {
 	Token string `json:"token"`
+}
+
+type RegisterResponse struct {
+	Token string `json:"token"`
+}
+
+type MeResponse struct {
+	Id        string    `db:"id"`
+	Name      string    `db:"name"`
+	Email     string    `db:"email"`
+	CreatedAt time.Time `db:"created_at"`
 }

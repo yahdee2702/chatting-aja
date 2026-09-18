@@ -51,7 +51,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	token, err := h.service.Login(r.Context(), req)
 
 	if err != nil {
-		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot login %s", err.Error()))
+		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot login: %s", err.Error()))
 		return
 	}
 
@@ -83,11 +83,29 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	token, err := h.service.Register(r.Context(), req)
 
 	if err != nil {
-		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot register %s", err.Error()))
+		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot register: %s", err.Error()))
 		return
 	}
 
-	httpx.Success(w, http.StatusOK, "Succesfully register in", LoginResponse{
+	httpx.Success(w, http.StatusCreated, "Succesfully register in", RegisterResponse{
 		Token: token,
+	})
+}
+
+func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
+	userId := r.Context().Value("userId").(string)
+
+	user, err := h.service.Me(r.Context(), userId)
+
+	if err != nil {
+		httpx.Error(w, http.StatusNotFound, "User not found")
+		return
+	}
+
+	httpx.Success(w, http.StatusOK, "User found", MeResponse{
+		Id:        user.Id,
+		Name:      user.Name,
+		Email:     user.Email,
+		CreatedAt: user.CreatedAt,
 	})
 }

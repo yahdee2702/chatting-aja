@@ -12,16 +12,19 @@ import (
 )
 
 type Handler struct {
+	env      string
 	service  *Service
 	logger   *slog.Logger
 	validate *validator.Validate
 }
 
 func NewHandler(
+	env string,
 	service *Service,
 	logger *slog.Logger,
 ) *Handler {
 	return &Handler{
+		env:      env,
 		service:  service,
 		logger:   logger,
 		validate: validator.New(),
@@ -55,6 +58,16 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	http.SetCookie(w, &http.Cookie{
+		Name:     "access_token",
+		Value:    token,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   h.env != "development", // false for local HTTP development
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   60 * 60 * 24 * 3, // 3 days
+	})
+
 	httpx.Success(w, http.StatusOK, "Succesfully logged in", LoginResponse{
 		Token: token,
 	})
@@ -86,6 +99,16 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 		httpx.Error(w, http.StatusUnauthorized, fmt.Sprintf("Cannot register: %s", err.Error()))
 		return
 	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "access_token",
+		Value:    token,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   h.env != "development", // false for local HTTP development
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   60 * 60 * 24 * 3, // 3 days
+	})
 
 	httpx.Success(w, http.StatusCreated, "Succesfully register in", RegisterResponse{
 		Token: token,

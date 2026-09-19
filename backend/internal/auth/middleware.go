@@ -21,12 +21,21 @@ func NewAuthMiddleware(jwtHandler *JwtHandler) *AuthMiddleware {
 func (m *AuthMiddleware) Handle(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
-		if !strings.Contains(authHeader, "Bearer") {
-			httpx.Error(w, http.StatusBadRequest, "Invalid token")
-			return
-		}
 
-		token := strings.TrimPrefix(authHeader, "Bearer ")
+		var token string
+
+		if strings.Contains(authHeader, "Bearer") {
+			token = strings.TrimPrefix(authHeader, "Bearer ")
+		} else {
+			cookieToken, err := r.Cookie("access_token")
+
+			if err != nil {
+				httpx.Error(w, http.StatusUnauthorized, "Token cannot be found")
+				return
+			}
+
+			token = cookieToken.Value
+		}
 
 		claims, err := m.jwtHandler.Verify(token)
 

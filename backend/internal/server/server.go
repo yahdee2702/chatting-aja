@@ -24,7 +24,7 @@ func New(config *config.Config, logger *slog.Logger, db *sqlx.DB) *Server {
 
 	authRepository := auth.NewRepository(db)
 	authService := auth.NewService(authRepository, jwtHandler)
-	authHandler := auth.NewHandler(authService, logger)
+	authHandler := auth.NewHandler(config.App.Env, authService, logger)
 
 	chatRepository := chat.NewRepository(db)
 	chatService := chat.NewService(chatRepository)

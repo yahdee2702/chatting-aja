@@ -71,7 +71,7 @@ func (r *Repository) CreateUser(ctx context.Context, name string, email string, 
 		RETURNING id
 	`
 
-	if err := r.db.GetContext(ctx, &id, query, email, passwordHash); err != nil {
+	if err := r.db.GetContext(ctx, &id, query, name, email, passwordHash); err != nil {
 		return "", err
 	}
 

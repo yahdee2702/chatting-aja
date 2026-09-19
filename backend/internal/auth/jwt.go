@@ -27,14 +27,14 @@ func (j *JwtHandler) Generate(userID string) (string, error) {
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(EXPIRATON_DURATION)),
 	}
 
-	token := jwt.NewWithClaims(&jwt.SigningMethodHMAC{}, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS512, claims)
 
 	return token.SignedString(j.secret)
 }
 
 func (j *JwtHandler) Verify(tokenString string) (*jwt.RegisteredClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.RegisteredClaims{}, func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+		if t.Method != jwt.SigningMethodHS512 {
 			return nil, fmt.Errorf("unexpected signing method")
 		}
 		return j.secret, nil

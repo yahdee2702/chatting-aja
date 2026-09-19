@@ -26,16 +26,16 @@
     --color-secondary-800: rgb(116, 130, 44);
     --color-secondary-900: rgb(88, 99, 34);
 
-    --color-neutral-50: rgb(250, 250, 250);
-    --color-neutral-100: rgb(239, 239, 239);
-    --color-neutral-200: rgb(232, 232, 232);
-    --color-neutral-300: rgb(221, 221, 221);
-    --color-neutral-400: rgb(214, 214, 214);
-    --color-neutral-500: rgb(204, 204, 204);
-    --color-neutral-600: rgb(186, 186, 186);
-    --color-neutral-700: rgb(145, 145, 145);
-    --color-neutral-800: rgb(112, 112, 112);
-    --color-neutral-900: rgb(86, 86, 86);
+    --color-neutral-50: rgb(252, 252, 253);
+    --color-neutral-100: rgb(245, 244, 250);
+    --color-neutral-200: rgb(241, 239, 247);
+    --color-neutral-300: rgb(234, 232, 244);
+    --color-neutral-400: rgb(230, 228, 241);
+    --color-neutral-500: rgb(224, 221, 238);
+    --color-neutral-600: rgb(204, 201, 217);
+    --color-neutral-700: rgb(159, 157, 169);
+    --color-neutral-800: rgb(123, 122, 131);
+    --color-neutral-900: rgb(94, 93, 100);
 }
 
 body {

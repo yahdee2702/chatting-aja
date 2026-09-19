@@ -29,24 +29,23 @@ const router = createRouter({
   routes: routes,
 })
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _) => {
   const auth = useAuthStore();
 
   if (!auth.initialized) {
-    auth.initialize();
+    await auth.initialize();
   }
 
   const requiredAuth = to.matched.some(record => {
-    console.log(record.name);
     return record.meta.requiredAuth;
   });
 
   if (requiredAuth && !auth.isAuthenticated) {
-    next({name: "Login"})
-  } else if (to.name === "Login" && auth.isAuthenticated) {
-    next({name: "Home"})
+    return {name: "login"};
+  } else if (to.name === "login" && auth.isAuthenticated) {
+    return {name: "home"};
   } else {
-    next();
+    return true;
   }
 })
 

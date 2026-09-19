@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/features/auth/store';
 
-import loginImage from "@/assets/login-page.webp"
-import registerImage from "@/assets/register-page.webp"
+import loginImage from "@/assets/images/login-page.webp"
+import registerImage from "@/assets/images/register-page.webp"
 
 import AuthLayout from '@/components/layouts/AuthLayout.vue';
 import HomeView from '@/pages/HomeView.vue';

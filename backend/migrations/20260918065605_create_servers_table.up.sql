@@ -27,3 +27,5 @@ CREATE TABLE channels (
 
     deleted_at TIMESTAMPTZ
 );
+
+CREATE INDEX idx_channels_server_id ON channels(server_id, created_at DESC);

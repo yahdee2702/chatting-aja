@@ -28,8 +28,11 @@ type DatabaseConfig struct {
 	SSLMode  string
 }
 
-func Load() *Config {
-	godotenv.Load()
+func Load() (*Config, error) {
+	if err := godotenv.Load(); err != nil {
+		return nil, err
+	}
+
 	return &Config{
 		App: AppConfig{
 			Env:    os.Getenv("APP_ENV"),
@@ -46,5 +49,5 @@ func Load() *Config {
 			Name:     os.Getenv("DB_NAME"),
 			SSLMode:  os.Getenv("DB_SSLMODE"),
 		},
-	}
+	}, nil
 }

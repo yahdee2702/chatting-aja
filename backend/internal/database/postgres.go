@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
 	"github.com/yahdee2702/chatting-aja/internal/config"
 )
@@ -18,6 +19,7 @@ func NewPostgres(cfg config.DatabaseConfig) (*sqlx.DB, error) {
 
 	query := dsn.Query()
 	query.Set("sslmode", cfg.SSLMode)
+	query.Set("TimeZone", "UTC")
 
 	dsn.RawQuery = query.Encode()
 	db, err := sqlx.Open(cfg.Driver, dsn.String())

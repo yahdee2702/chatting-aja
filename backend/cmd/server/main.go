@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -15,7 +16,11 @@ import (
 )
 
 func main() {
-	config := config.Load()
+	config, err := config.Load()
+
+	if err != nil {
+		log.Fatalf("failed to load config: %s", err.Error())
+	}
 
 	logger := logging.New(config.App.Env)
 	slog.SetDefault(logger)

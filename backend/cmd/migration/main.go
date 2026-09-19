@@ -258,8 +258,8 @@ func runDown(ctx context.Context, logger *slog.Logger, db *sqlx.DB, files []migr
 		}
 
 		if err := dropMigration(ctx, db, file); err != nil {
-			logger.ErrorContext(ctx, fmt.Sprintf("failed logging %06d_%s", file.version, file.name))
-			return fmt.Errorf("logging rollback %06d_%s: %w", file.version, file.name, err)
+			logger.ErrorContext(ctx, fmt.Sprintf("failed droppping %06d_%s", file.version, file.name))
+			return fmt.Errorf("dropping rollback %06d_%s: %w", file.version, file.name, err)
 		}
 
 		logger.InfoContext(ctx, fmt.Sprintf("successfully rolling back %06d_%s", file.version, file.name))

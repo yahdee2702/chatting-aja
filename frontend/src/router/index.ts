@@ -1,8 +1,14 @@
-import AuthLayout from '@/components/layouts/AuthLayout.vue';
+import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/features/auth/store';
+
+import loginImage from "@/assets/login-page.webp"
+import registerImage from "@/assets/register-page.webp"
+
+import AuthLayout from '@/components/layouts/AuthLayout.vue';
 import HomeView from '@/pages/HomeView.vue';
 import LoginView from '@/pages/LoginView.vue';
-import { createRouter, createWebHistory } from 'vue-router'
+import RegisterView from '@/pages/RegisterView.vue';
+
 
 const routes = [
   {
@@ -12,15 +18,28 @@ const routes = [
       {
         path: 'login',
         name: 'login',
+        meta: {
+          image: loginImage,
+        },
         component: LoginView,
+      },
+      {
+        path: 'register',
+        name: 'register',
+        meta: {
+          image: registerImage,
+        },
+        component: RegisterView,
       },
     ],
   },
   {
-    path: "",
+    path: "/",
     name: "home",
     component: HomeView,
-    meta: {requiredAuth: true}
+    meta: {
+      requiredAuth: true
+    }
   },
 ];
 
@@ -42,7 +61,7 @@ router.beforeEach(async (to, _) => {
 
   if (requiredAuth && !auth.isAuthenticated) {
     return {name: "login"};
-  } else if (to.name === "login" && auth.isAuthenticated) {
+  } else if ((to.name === "login" || to.name === "register") && auth.isAuthenticated) {
     return {name: "home"};
   } else {
     return true;

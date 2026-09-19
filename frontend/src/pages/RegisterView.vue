@@ -5,10 +5,9 @@ import { IconMessage } from "@tabler/icons-vue";
 import FormInput from "@/components/ui/FormInput.vue"
 import FormButton from "@/components/ui/FormButton.vue"
 
-import type { LoginRequest } from "@/features/auth/types";
-import { login } from "@/features/auth/api";
+import type { RegisterRequest } from "@/features/auth/types";
+import { register } from "@/features/auth/api";
 import { ApiError } from "@/services/api_errors";
-import { useAuthStore } from "@/features/auth/store";
 
 const router = useRouter();
 
@@ -16,17 +15,16 @@ async function onSubmit(e: SubmitEvent) {
     const form = e.currentTarget as HTMLFormElement
     const formData = new FormData(form);
     
-    const data: LoginRequest = {
+    const data: RegisterRequest = {
+        name: formData.get('name') as string,
         email: formData.get('email') as string,
         password: formData.get('password') as string,
+        password_confirm: formData.get('password_confirm') as string,
     }
 
     try {
-        const res = await login(data);
+        const res = await register(data);
         console.log(res.message);
-
-        const auth = useAuthStore();
-        await auth.initialize();
 
         router.push({name: "home"});
     } catch (e) {
@@ -49,22 +47,26 @@ async function onSubmit(e: SubmitEvent) {
         </div>
 
         <h1 class="text-3xl text-black font-semibold mb-1">
-            Welcome Back!
+            Create Your Account
         </h1>
 
-        <p class="text-base text-neutral-700 mb-11">Start chatting with your friends!</p>
+        <p class="text-base text-neutral-700 mb-11">Identify yourself!</p>
+
+        <FormInput label="Username" name="name" placeholder="Input your username" required class="mb-4" />
 
         <FormInput label="Email" name="email" placeholder="Input your email" required class="mb-4" />
 
         <FormInput label="Password" name="password" type="password" placeholder="Input your password" required class="mb-4" />
 
+        <FormInput label="Password Confirm" name="password_confirm" type="password" placeholder="Confirm your password" required class="mb-4" />
+
         <FormButton type="submit" class="mb-4">
-            Login
+            Register
         </FormButton>
 
         <p class="text-sm text-neutral-800 text-center">
-            Don't have an account? <a href="/auth/register"
-                class="text-primary-500 hover:text-primary-600 font-semibold">Register</a>
+            Already have an account? <a href="/auth/login"
+                class="text-primary-500 hover:text-primary-600 font-semibold">Login</a>
         </p>
     </form>
 </template>

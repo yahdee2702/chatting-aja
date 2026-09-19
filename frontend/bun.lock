@@ -5,6 +5,7 @@
     "": {
       "name": "chatting-aja-frontend",
       "dependencies": {
+        "@tabler/icons-vue": "^3.47.0",
         "@tailwindcss/vite": "^4.3.3",
         "axios": "^1.20.0",
         "pinia": "^4.0.2",
@@ -254,6 +255,10 @@
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.1", "", {}, "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
+
+    "@tabler/icons": ["@tabler/icons@3.47.0", "", {}, "sha512-aCbSemVrGvSA3w0sJi8mka6QrnQCN8wCD1jKNXXIR/h6Q4ffov/yFPyzjTULDM8ETtK4DABUZhWdYlygqy3npA=="],
+
+    "@tabler/icons-vue": ["@tabler/icons-vue@3.47.0", "", { "dependencies": { "@tabler/icons": "3.47.0" }, "peerDependencies": { "vue": ">=3.0.1" } }, "sha512-5RsKv35DGq2Pi+rfN20e9eRvf1iiipC3c9jSBtP9M8NcL8u7QXWv5WzSjwEMVldQc2GDtYEeLf//KFEb4Lt/cA=="],
 
     "@tailwindcss/node": ["@tailwindcss/node@4.3.3", "", { "dependencies": { "@jridgewell/remapping": "^2.3.5", "enhanced-resolve": "^5.24.1", "jiti": "^2.7.0", "lightningcss": "1.32.0", "magic-string": "^0.30.21", "source-map-js": "^1.2.1", "tailwindcss": "4.3.3" } }, "sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg=="],
 

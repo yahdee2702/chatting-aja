@@ -10,5 +10,6 @@ func Routes(r chi.Router, authHandler *Handler, authMiddleware *AuthMiddleware) 
 		r.Use(authMiddleware.Handle)
 
 		r.Get("/me", authHandler.Me)
+		r.Post("/logout", authHandler.Logout)
 	})
 }

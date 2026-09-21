@@ -115,6 +115,20 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "access_token",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   h.env != "development",
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   -1,
+	})
+
+	httpx.Success(w, http.StatusOK, "Succesfully logged out", nil)
+}
+
 func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
 	userId := r.Context().Value("userId").(string)
 

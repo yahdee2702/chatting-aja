@@ -5,9 +5,12 @@ import loginImage from "@/assets/images/login-page.webp"
 import registerImage from "@/assets/images/register-page.webp"
 
 import AuthLayout from '@/components/layouts/AuthLayout.vue';
-import HomeView from '@/pages/HomeView.vue';
-import LoginView from '@/pages/LoginView.vue';
-import RegisterView from '@/pages/RegisterView.vue';
+import ChatLayout from '@/components/layouts/ChatLayout.vue';
+
+import LoginView from '@/pages/auth/LoginView.vue';
+import RegisterView from '@/pages/auth/RegisterView.vue';
+import EmptyConversation from '@/pages/chats/EmptyConversation.vue';
+import ChatsConversation from '@/pages/chats/ChatsConversation.vue';
 
 
 const routes = [
@@ -35,11 +38,27 @@ const routes = [
   },
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    component: ChatLayout,
     meta: {
       requiredAuth: true
-    }
+    },
+    children: [
+      {
+        path: "/",
+        name: "home",
+        component: EmptyConversation,
+      },
+      {
+        path: "/",
+        name: "chats",
+        component: ChatsConversation,
+      },
+      {
+        path: "/",
+        name: "servers",
+        component: EmptyConversation,
+      },
+    ],
   },
 ];
 

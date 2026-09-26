@@ -21,14 +21,14 @@ const getType = (type?: string) =>
 
 <template>
     <div>
-        <label :id="'input-label-' + name" :for="'input-' + name" class="block text-base text-black font-medium mb-1">{{ label }}</label>
+        <label :id="'input-label-' + name" :for="'input-' + name" class="block text-sm 2xl:text-base text-black font-medium mb-1">{{ label }}</label>
         <div class="relative w-full h-11">
             <input :id="'input-' + name" :type="getType(type)" :name="name" :placeholder="placeholder" :required="required"
-                class="absolute inset-y-0 left-0 w-full h-11 px-3 py-2.5 bg-white border border-neutral-400 focus:border-primary-500 rounded-lg text-sm text-black placeholder:text-neutral-700 outline-none appearance-none"
+                class="absolute inset-y-0 left-0 w-full h-10 2xl:h-11 px-3 py-2.5 bg-white border border-neutral-400 focus:border-primary-500 rounded-lg text-xs 2xl:text-sm text-black placeholder:text-neutral-700 outline-none appearance-none"
                 :class="type == 'password' ? 'pr-12' : ''">
             <div v-if="type === 'password'"
                 class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                <div class="w-6 h-6 text-neutral-700 pointer-events-auto cursor-pointer select-none">
+                <div class="w-5 h-5 2xl:w-6 2xl:h-6 text-neutral-700 pointer-events-auto cursor-pointer select-none">
                     <IconEye class="w-full h-full" v-if="showPassword" @click="showPassword = false" />
                     <IconEyeClosed class="w-full h-full" v-if="!showPassword" @click="showPassword = true" />
                 </div>

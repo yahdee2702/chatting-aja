@@ -1,7 +1,12 @@
+CREATE TYPE chat_type AS ENUM (
+    'individual',
+    'group'
+);
+
 CREATE TABLE chats (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 
-    type VARCHAR(20) NOT NULL,
+    type chat_type NOT NULL,
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
